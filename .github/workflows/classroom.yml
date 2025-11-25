@@ -1,0 +1,177 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+- workflow_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: test_altura_cero
+      id: test_altura_cero
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_altura_cero
+        setup-command: ''
+        command: python main.py
+        input: |-
+          0
+          *
+        expected-output: 'Error: La altura debe ser un entero positivo'
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: test_altura_negativa
+      id: test_altura_negativa
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_altura_negativa
+        setup-command: ''
+        command: python main.py
+        input: |-
+          -3
+          *
+        expected-output: 'Error: La altura debe ser un entero positivo'
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: test_caracter_vacio
+      id: test_caracter_vacio
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_caracter_vacio
+        setup-command: ''
+        command: python main.py
+        input: '3'
+        expected-output: 'Error: Se esperan 2 lineas de entrada (altura, caracter)'
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: test_figura_altura_1
+      id: test_figura_altura_1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_figura_altura_1
+        setup-command: ''
+        command: python main.py
+        input: |-
+          1
+          *
+        expected-output: "*"
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: test_figura_altura_3_asterisco
+      id: test_figura_altura_3_asterisco
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_figura_altura_3_asterisco
+        setup-command: ''
+        command: python main.py
+        input: |-
+          3
+          *
+        expected-output: |-
+          *****
+           ***
+            *
+           ***
+          *****
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: test_figura_altura_5_asterisco
+      id: test_figura_altura_5_asterisco
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_figura_altura_5_asterisco
+        setup-command: ''
+        command: python main.py
+        input: |-
+          5
+          *
+        expected-output: |-
+          *********
+           *******
+            *****
+             ***
+              *
+             ***
+            *****
+           *******
+          *********
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: test_figura_altura_6_numeral_par
+      id: test_figura_altura_6_numeral_par
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_figura_altura_6_numeral_par
+        setup-command: ''
+        command: python main.py
+        input: |-
+          6
+          #
+        expected-output: |-
+          ###########
+           #########
+            #######
+             #####
+              ###
+               #
+              ###
+             #####
+            #######
+           #########
+          ###########
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: test_figura_con_cadena_larga_par
+      id: test_figura_con_cadena_larga_par
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_figura_con_cadena_larga_par
+        setup-command: ''
+        command: python main.py
+        input: |-
+          4
+          ab
+        expected-output: |-
+          ababababababab
+           abababababab
+            ababababab
+             abababab
+              ababab
+               abab
+                ab
+               abab
+              ababab
+             abababab
+            ababababab
+           abababababab
+          ababababababab
+        comparison-method: exact
+        timeout: 5
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_ALTURA_CERO_RESULTS: "${{steps.test_altura_cero.outputs.result}}"
+        TEST_ALTURA_NEGATIVA_RESULTS: "${{steps.test_altura_negativa.outputs.result}}"
+        TEST_CARACTER_VACIO_RESULTS: "${{steps.test_caracter_vacio.outputs.result}}"
+        TEST_FIGURA_ALTURA_1_RESULTS: "${{steps.test_figura_altura_1.outputs.result}}"
+        TEST_FIGURA_ALTURA_3_ASTERISCO_RESULTS: "${{steps.test_figura_altura_3_asterisco.outputs.result}}"
+        TEST_FIGURA_ALTURA_5_ASTERISCO_RESULTS: "${{steps.test_figura_altura_5_asterisco.outputs.result}}"
+        TEST_FIGURA_ALTURA_6_NUMERAL_PAR_RESULTS: "${{steps.test_figura_altura_6_numeral_par.outputs.result}}"
+        TEST_FIGURA_CON_CADENA_LARGA_PAR_RESULTS: "${{steps.test_figura_con_cadena_larga_par.outputs.result}}"
+      with:
+        runners: test_altura_cero,test_altura_negativa,test_caracter_vacio,test_figura_altura_1,test_figura_altura_3_asterisco,test_figura_altura_5_asterisco,test_figura_altura_6_numeral_par,test_figura_con_cadena_larga_par
