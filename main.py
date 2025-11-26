@@ -2,7 +2,7 @@
 
 import sys
 # TODO: importar la función reloj_arena
-from solucion import [NOMBRE_DE_LA_FUNCION]
+from solucion import reloj_arena
 
 def main():
     """
@@ -29,6 +29,7 @@ def main():
     # Intentar convertir la altura a entero
     try:
         # TODO: Convertir m_str a entero y asignarlo a m
+        m = int(
         pass
     except ValueError:
         # TODO: imprimir "Error: La altura debe ser un numero entero" y salir
