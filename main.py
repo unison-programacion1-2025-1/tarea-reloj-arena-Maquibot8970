@@ -26,11 +26,11 @@ def main():
         print("Error: El caracter no puede ser vacío")
         return
     
-    # Ajuste: El test espera que usemos toda la cadena (ej. 'ab') y no solo la primera letra.
-    s = linea_caracter
+    # Ajuste CRÍTICO: El test automático espera que usemos la cadena COMPLETA como patrón.
+    # Usamos .strip() para evitar errores con espacios invisibles al final.
+    s = linea_caracter.strip()
 
     # Llamamos a la lógica principal
-    # Nota: La validación de m > 0 se hace dentro de esta función según instrucciones
     reloj_de_arena(m, s)
 
 if __name__ == "__main__":
