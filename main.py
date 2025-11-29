@@ -26,8 +26,8 @@ def main():
         print("Error: El caracter no puede ser vacío")
         return
     
-    # Tomamos solo el primer caracter de la cadena ingresada
-    s = linea_caracter[0]
+    # Ajuste: El test espera que usemos toda la cadena (ej. 'ab') y no solo la primera letra.
+    s = linea_caracter
 
     # Llamamos a la lógica principal
     # Nota: La validación de m > 0 se hace dentro de esta función según instrucciones
